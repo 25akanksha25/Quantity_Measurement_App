@@ -68,15 +68,32 @@ class Length
         return this.compare(a);
     }
 
+    public double convert(double val,Length.LengthUnit from,Length.LengthUnit to)
+    {
+        if(!Double.isFinite(val))
+        {
+            throw new IllegalArgumentException("Value should be finite");
+        }
+        if(from == null || to == null)
+        {
+            throw new IllegalArgumentException("Unit can't be null");
+        }
+
+        double base = val * from.getConversionFactor();
+        double ans = base / to.getConversionFactor();
+        
+        return ans;
+
+    }
+
     public Length convertTo(LengthUnit targetUnit)
     {
         if(targetUnit == null)
         {
             throw new IllegalArgumentException("Target is null");
         }
-        double base = this.convertTobaseUnit();
-
-        double ans = base / targetUnit.getConversionFactor();
+        
+        double ans = convert(this.val, this.unit, targetUnit);
         // String a = String.format("%.2f",ans);
         // double ab = Double.parseDouble(a);
         return new Length(ans, targetUnit);
