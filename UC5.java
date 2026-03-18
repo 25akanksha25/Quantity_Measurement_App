@@ -1,5 +1,7 @@
 package Quantity_Measurement_App;
 
+
+
 class Length
 {
     private double val;
@@ -28,6 +30,13 @@ class Length
     }
 
     public Length(double val,LengthUnit unit) {
+        if(!Double.isFinite(val)){
+            throw new IllegalArgumentException("Value should be finite");
+        }
+        if(unit == null)
+        {
+            throw new IllegalArgumentException("Unit can't be null");
+        }
         this.val = val;
         this.unit = unit;
     }
@@ -35,8 +44,9 @@ class Length
     public double convertTobaseUnit()
     {
         double ans = val * unit.getConversionFactor();
-        String a = String.format("%.2f",ans);
-        return Double.parseDouble(a);
+        // String a = String.format("%.2f",ans); // 36.00
+        // return Double.parseDouble(a);
+        return ans;
     }
 
     private boolean compare(Length thatLength)
@@ -64,23 +74,19 @@ class Length
         {
             throw new IllegalArgumentException("Target is null");
         }
-
         double base = this.convertTobaseUnit();
 
         double ans = base / targetUnit.getConversionFactor();
-        String a = String.format("%.2f",ans);
-        double ab = Double.parseDouble(a);
-
-        return new Length(ab, targetUnit);
-
+        // String a = String.format("%.2f",ans);
+        // double ab = Double.parseDouble(a);
+        return new Length(ans, targetUnit);
     }
-
     public String toString()
     {
-        return val + " " + unit;
+        String ans = String.format("%.2f",val);
+        return ans + " " + unit;
     }
 
-    
 }
 
 public class UC5 {
